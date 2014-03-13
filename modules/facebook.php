@@ -40,7 +40,7 @@ $app->get('/facebook', function () {
         'about' => $response['about'],
         'page' => $response,
         'feed' => $facebook->api("/".$pageid.'/feed'),
-        'photos' => $facebook->api("/".$pageid.'/photos')
+        'photos' => $facebook->api("/".$pageid.'/photos')["data"]
 
     ));
 });

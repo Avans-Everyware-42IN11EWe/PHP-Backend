@@ -55,11 +55,17 @@ class DatabaseHelper {
         return DatabaseHelper::$mysqlConn;
     }
 
+    /**
+     * @return PDO
+     */
     public static function GetPDOConnection()
     {
         return DatabaseHelper::$PDOConn;
     }
 
+    /**
+     * @return PDO
+     */
     public static function GetGISConnection()
     {
         return DatabaseHelper::$GISConn;
