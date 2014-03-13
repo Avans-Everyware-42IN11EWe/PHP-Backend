@@ -3,6 +3,7 @@
     "description": "description_text",
     "minimum-stability": "stable",
     "require": {
-        "slim/slim": "2.4.2"
+        "slim/slim": "2.4.2",
+        "facebook/php-sdk" : "v3.2.3"
     }
 }

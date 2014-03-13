@@ -31,6 +31,10 @@ $app->get('/', function () {
 	}*/
 });
 
+
+require('modules/geo.php');
+require('modules/facebook.php');
+
 // POST routes
 
 // Login
