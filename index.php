@@ -21,57 +21,16 @@ if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbpass,
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
-require('modules/docs.php');
-require('modules/video.php');
-require('modules/geo.php');
-require('modules/facebook.php');
+require('modules/test/docs.php');
 
-// POST routes
+require('modules/wijk.php');
+require('modules/wijkbewoner.php');
 
-// Login
-$app->post('/login', function () {
+require('modules/test/video.php');
+require('modules/test/geo.php');
+require('modules/test/facebook.php');
 
-	$jObj = json_decode($_POST["json"]);
-	if(isset($jObj->token))
-	{
-		Managers\UserManager::Login($jObj->token);
-	}
-    else
-		json_encode(array("response" => "err", "message" => "Missing post data"));
-});
-
-// Register
-$app->post('/register', function () {
-    $jObj = json_decode($_POST["json"]);
-	if(isset($jObj->name) && isset($jObj->email))
-	{
-		Managers\UserManager::Register($jObj->name, $jObj->email);
-	}
-    else
-		json_encode(array("response" => "err", "message" => "Missing post data"));
-});
-
-
-
-
-// Chat
-$app->post('/chat/getmessages', function () {
-
-    $jObj = json_decode($_POST["json"]);
-
-});
-
-$app->post('/chat/hasnewmessages', function () {
-
-    $jObj = json_decode($_POST["json"]);
-
-});
-
-$app->post('/chat/sendmessage', function () {
-
-    $jObj = json_decode($_POST["json"]);
-
-});
+require('modules/test/chat.php');
 
 $app->run();
 \Helpers\DatabaseHelper::Close();
