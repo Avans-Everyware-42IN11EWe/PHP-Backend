@@ -12,7 +12,7 @@ if(!file_exists("config.php")) {
 require 'config.php';
 
 // Create database connection
-if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbname, $dbpass))
+if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbpass, $dbname))
 {
 	echo "Database connection failed.";
 	exit;
