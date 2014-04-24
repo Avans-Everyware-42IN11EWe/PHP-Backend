@@ -5,13 +5,39 @@ class UserManager
 {
 
 	public static function Register($name, $email)
-	{	
-		echo json_encode(array("response" => "ok", "user" => array("name" => $name, "email" => $email), "token" => "TODO"));
+	{
+	
+		/*
+		// Test query
+		$qBuilder = new Builders\QueryBuilder("SELECT * FROM users");
+			
+		if($qBuilder->Execute())
+		{
+			$fetchedArray = $qBuilder->GetFetchedArray();
+			$qBuilder->Close();
+				
+			var_dump($fetchedArray);	
+	}*/
+	
+		echo array("response" => "ok", "token" => "TODO");
 	}
 	
 	public static function Login($token)
 	{	
-		echo json_encode(array("response" => "ok", "token" => "TODO"));
+
+			/*
+	// Test query
+	$qBuilder = new Builders\QueryBuilder("SELECT * FROM users");
+		
+	if($qBuilder->Execute())
+	{
+		$fetchedArray = $qBuilder->GetFetchedArray();
+		$qBuilder->Close();
+			
+		var_dump($fetchedArray);	
+	}*/
+	
+		echo array("response" => "ok", "token" => "TODO");
 	}
 
 
