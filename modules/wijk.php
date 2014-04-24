@@ -1,4 +1,24 @@
 <?php
+doc(
+    "wijk",
+    "Wijken in de buurt",
+    "GET <code>/districts?lat=51.983333&long=5.916667</code>",
+    "                <h4>Return:</h4>
+                <pre>
+[
+    { 'id': 1, 'name': 'Wallen', 'status': 'action', 'distance': 0 },
+    { 'id': 2, 'name': 'Centrum', 'status': 'unknown', 'distance': 2.123 },
+    { 'id': 3, 'name': 'West', 'status': 'infrastructural_possible', 'distance': 3.55 }
+]</pre>
+    Mogelijke wijkstatussen:
+        <code>unknown</code>,
+        <code>infrastructural_impossible</code>,
+        <code>infrastructural_possible</code>,
+        <code>action</code>,
+        <code>commited</code>,
+        <code>success</code>
+"
+);
 $app->get("/districts", function(){
     ?>
 [
@@ -9,6 +29,35 @@ $app->get("/districts", function(){
 <?php
 });
 
+
+doc(
+    "wijk",
+    "GEO",
+    "GET <code>/geo?district=1</code>",
+    "<h4>Return:</h4>
+    <pre>komt nog</pre>");
+$app->get('/geo', function() {
+    echo 'komt nog...';
+});
+
+doc(
+    "wijk",
+    "Video's",
+    "GET <code>/videos?district=1</code>",
+    "<h4>Return:</h4>
+    <pre>
+[
+    {
+        'id': 123455,
+        'url': 'http://glas.mycel.nl/uploads/videos/123455.mp4',
+        'thumb_url': 'http://glas.mycel.nl/uploads/videos/123455.mp4.jpg'
+    },
+    {
+        'id': 123456,
+        'url': 'http://glas.mycel.nl/uploads/videos/123456.mp4',
+        'thumb_url': 'http://glas.mycel.nl/uploads/videos/123456.mp4.jpg'
+    }
+]</pre>");
 $app->get("/videos", function(){
     ?>
 [
@@ -26,6 +75,22 @@ $app->get("/videos", function(){
 <?php
 });
 
+doc(
+    "wijk",
+    "De foto's van wijkbewoners",
+    "GET <code>/pictures?district=1</code>",
+    "<h4>Return:</h4>
+    <pre>
+[
+    {
+        'resident_id': 1,
+        'facebook': '100000644333726'
+    },
+    {
+        'resident_id': 2,
+        'facebook': '100002085564993'
+    }
+]</pre>");
 $app->get("/pictures", function(){
     ?>
 [
@@ -41,9 +106,9 @@ $app->get("/pictures", function(){
 <?php
 });
 
-$app->get('/district', function() {
+ob_start();
 ?>
-{
+    {
     "plaatjes":[
     "100000644333726",
     "100002085564993",
@@ -120,6 +185,19 @@ $app->get('/district', function() {
     "updated_time":"2014-03-16T11:55:35+0000"
     }
     ]
-}
+    }
 <?php
+$blaat = ob_get_contents();
+ob_end_clean();
+
+
+doc(
+    "wijk",
+    "Wijkinformatie",
+    "GET <code>/district?id=1</code>",
+    "<h4>Return:</h4>
+    <pre>".$blaat."</pre>");
+$app->get('/district', function() {
+    global $blaat;
+    echo $blaat;
 });

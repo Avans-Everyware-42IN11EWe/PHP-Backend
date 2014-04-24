@@ -21,6 +21,16 @@ if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbpass,
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
+$docs = array("wijk" => array(), "wijkbewoner" => array());
+function doc($sort, $name, $url, $html) {
+    global $docs;
+    array_push($docs[$sort], array(
+        "name" => $name,
+        "url" => $url,
+        "html" => $html
+    ));
+}
+
 require('modules/test/docs.php');
 
 require('modules/wijk.php');
