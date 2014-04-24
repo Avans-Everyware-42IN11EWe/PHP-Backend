@@ -1,14 +1,14 @@
 <?php
 $app->get('/facebook', function () {
-    global $app;
+    global $app, $fbid, $fbsecret;
 
     $db = \Helpers\DatabaseHelper::GetPDOConnection();
 
     $app->response->headers->set('Content-Type', 'application/json');
 
     $config = array(
-        'appId' => '718137888230563',
-        'secret' => 'ed41e1cb918375868931b1e0e86408d4',
+        'appId' => $fbid,
+        'secret' => $fbsecret,
         'fileUpload' => false, // optional
         'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
     );

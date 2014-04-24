@@ -6,8 +6,13 @@ require 'builders/query.builder.php';
 
 require 'managers/user.manager.php';
 
+if(!file_exists("config.php")) {
+    die("Je moet het 'config.php'-bestandje uit dropbox halen en de hoofdmap stoppen.");
+}
+require 'config.php';
+
 // Create database connection
-if(!\Helpers\DatabaseHelper::CreateDatabaseConnection("nas.eye2web.nl", "school", "welkom", "glasaanhuis"))
+if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbname, $dbpass))
 {
 	echo "Database connection failed.";
 	exit;
