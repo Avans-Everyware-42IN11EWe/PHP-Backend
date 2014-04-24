@@ -24,7 +24,10 @@ $app->get('/geo.html', function(){
                 });
             });
 
-        </script></head><body><div id="container"><div id="map"></div></div></body></html>
+        </script>
+        <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+
+    </head><body><div id="container"><div id="map"></div></div></body></html>
    <?php
 });
 
@@ -46,6 +49,7 @@ $app->get('/geo', function () {
 
     //
     $postcodes = [5211, 5212, 5213, 5222, 5223];//$_GET['code']
+//    $postcodes = [5402, 5403,5404];
 
     $wijken = [];
     /**
@@ -56,9 +60,7 @@ $app->get('/geo', function () {
         $sth = $db->prepare("
         select
             ST_AsGeoJson(
-                ST_ConvexHull(
-                    ST_Collect(geo)
-                )
+                ST_ConcaveHull(ST_Collect(geo), 0.99)
             ) as geo,
             ST_AsGeoJson(ST_Centroid(
                 ST_Collect(geo)

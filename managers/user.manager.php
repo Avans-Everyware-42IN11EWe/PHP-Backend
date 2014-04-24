@@ -6,12 +6,12 @@ class UserManager
 
 	public static function Register($name, $email)
 	{	
-		echo array("response" => "ok", "token" => "TODO");
+		echo json_encode(array("response" => "ok", "user" => array("name" => $name, "email" => $email), "token" => "TODO"));
 	}
 	
 	public static function Login($token)
 	{	
-		echo array("response" => "ok", "token" => "TODO");
+		echo json_encode(array("response" => "ok", "token" => "TODO"));
 	}
 
 

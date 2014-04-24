@@ -16,22 +16,8 @@ if(!\Helpers\DatabaseHelper::CreateDatabaseConnection("nas.eye2web.nl", "school"
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
-// Default route
-$app->get('/', function () {	
-	/*
-	// Test query
-	$qBuilder = new Builders\QueryBuilder("SELECT * FROM users");
-		
-	if($qBuilder->Execute())
-	{
-		$fetchedArray = $qBuilder->GetFetchedArray();
-		$qBuilder->Close();
-			
-		var_dump($fetchedArray);	
-	}*/
-});
-
-
+require('modules/docs.php');
+require('modules/video.php');
 require('modules/geo.php');
 require('modules/facebook.php');
 
@@ -43,7 +29,7 @@ $app->post('/login', function () {
 	$jObj = json_decode($_POST["json"]);
 	if(isset($jObj->token))
 	{
-		echo json_encode(Managers\UserManager::Login($jObj->token));
+		Managers\UserManager::Login($jObj->token);
 	}
     else
 		json_encode(array("response" => "err", "message" => "Missing post data"));
@@ -51,11 +37,10 @@ $app->post('/login', function () {
 
 // Register
 $app->post('/register', function () {
-
     $jObj = json_decode($_POST["json"]);
 	if(isset($jObj->name) && isset($jObj->email))
 	{
-		echo json_encode(Managers\UserManager::Register($jObj->name, $jObj->email));
+		Managers\UserManager::Register($jObj->name, $jObj->email);
 	}
     else
 		json_encode(array("response" => "err", "message" => "Missing post data"));

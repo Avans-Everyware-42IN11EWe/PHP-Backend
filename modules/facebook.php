@@ -41,6 +41,5 @@ $app->get('/facebook', function () {
         'page' => $response,
         'feed' => $facebook->api("/".$pageid.'/feed'),
         'photos' => $facebook->api("/".$pageid.'/photos')["data"]
-
     ));
 });
