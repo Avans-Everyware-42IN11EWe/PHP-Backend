@@ -7,7 +7,7 @@ $app->get('/geo.html', function(){
    ?>
     <!DOCTYPE html><html><head><title></title><link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet"><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script><script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script><link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' /><style>body { margin:0; padding:0; }#map { position:absolute; top:0; bottom:0; width:100%; }</style><script>
             $(function() {
-                var map = L.mapbox.map('map', 'examples.map-9ijuk24y');
+                var map = L.mapbox.map('map', 'nanne.i84f0he3');
                 $.get('/geo', function(data){map.setView(data.centroid.reverse(), 14);
                     for (var i = 0; i < data.wijken.length; i++) {
                         var wijk = data.wijken[i];var p = wijk.percentage;

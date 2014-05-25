@@ -1,0 +1,40 @@
+
+<script>
+    $(function(){
+        d3.json('/admin/graph.json', function(data) {
+            nv.addGraph(function() {
+                console.log(data);
+                var chart = nv.models.stackedAreaChart()
+                                .x(function(d) { return d[0] })
+                                .y(function(d) { return d[1] })
+                                .clipEdge(true)
+                                .useInteractiveGuideline(false)
+                        ;
+
+                chart.xAxis
+                        .showMaxMin(true)
+                        .tickFormat(function(d) { return d3.time.format('%x')(new Date(d * 1000)) });
+
+                chart.yAxis
+                        .tickFormat(d3.format(',r'));
+
+                d3.select('#chart svg')
+                        .datum(data)
+                        .transition().duration(100).call(chart);
+
+                nv.utils.windowResize(chart.update);
+
+                return chart;
+            });
+
+        });
+    });
+</script>
+<style>
+    #chart svg {
+        height: 400px;
+    }
+</style>
+<div id="chart">
+    <svg></svg>
+</div>

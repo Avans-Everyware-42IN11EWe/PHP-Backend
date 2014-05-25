@@ -17,6 +17,7 @@ if(!\Helpers\DatabaseHelper::CreateDatabaseConnection($dbhost, $dbuser, $dbpass,
 	echo "Database connection failed.";
 	exit;
 }
+header('Access-Control-Allow-Origin: *');
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
@@ -35,6 +36,7 @@ require('modules/test/docs.php');
 
 require('modules/wijk.php');
 require('modules/wijkbewoner.php');
+require('modules/admin.php');
 
 require('modules/test/video.php');
 require('modules/test/geo.php');
