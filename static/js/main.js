@@ -2,32 +2,28 @@
  * Created by nanne on 24-05-14.
  */
 
-var glasApp = angular.module('glasApp', ['ngRoute']);
+var glasApp = angular.module('glasApp', ['ngRoute', 'leaflet-directive']);
 
 glasApp.config(['$routeProvider',
     function($routeProvider) {
-        $routeProvider.
-            when('/dashboard', {
+        $routeProvider
+            .when('/dashboard', {
                 templateUrl: 'views/dashboard.html',
                 controller: 'DashboardCtl'
-            }).
-            otherwise({
+            })
+            .when('/wijken', {
+                templateUrl: 'views/wijken.html',
+                controller: 'WijkCtl'
+            })
+            .otherwise({
                 redirectTo: '/dashboard'
             });
     }]);
 
 glasApp.controller('DashboardCtl', function ($scope) {
-    $scope.phones = [
-        {'name': 'Nexus S',
-            'snippet': 'Fast just got faster with Nexus S.',
-            'age': 1},
-        {'name': 'Motorola XOOM™ with Wi-Fi',
-            'snippet': 'The Next, Next Generation tablet.',
-            'age': 2},
-        {'name': 'MOTOROLA XOOM™',
-            'snippet': 'The Next, Next Generation tablet.',
-            'age': 3}
-    ];
 
-    $scope.orderProp = 'age';
+});
+
+glasApp.controller('WijkCtl', function ($scope) {
+    var map = L.mapbox.map('map', 'nanne.i84f0he3');
 });

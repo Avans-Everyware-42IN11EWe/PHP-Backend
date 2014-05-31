@@ -34,8 +34,30 @@ function doc($sort, $name, $url, $html) {
 
 require('modules/test/docs.php');
 
-require('modules/wijk.php');
-require('modules/wijkbewoner.php');
+/**
+ * wijk
+ */
+require('modules/wijk/lijsten.php');
+require('modules/wijk/wijkinformatie.php');
+require('modules/wijk/geo.php');
+require('modules/wijk/buddies.php');
+require('modules/wijk/faq.php');
+require('modules/wijk/videos.php');
+//require('modules/wijk/buddies.php');
+
+/*
+ * wijkbewoner
+ */
+require('modules/wijkbewoner/registreren.php');
+require('modules/wijkbewoner/facebook.php');
+require('modules/wijkbewoner/status.php');
+require('modules/wijkbewoner/profiel.php');
+require('modules/wijkbewoner/commitment.php');
+require('modules/wijkbewoner/chat.php');
+require('modules/wijkbewoner/video.php');
+
+
+
 require('modules/admin.php');
 
 require('modules/test/video.php');
