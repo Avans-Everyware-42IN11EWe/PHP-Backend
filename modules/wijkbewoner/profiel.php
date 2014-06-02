@@ -20,6 +20,14 @@ $app->get('/buddy', function () {
     global $app;
     $app->response->headers->set('Content-Type', 'application/json');
 
+//    $db = \Helpers\DatabaseHelper::GetPDOConnection();
+//    $stmt = $db->prepare("
+//        select
+//            `status`
+//        from residents
+//        where id = ? and token = ?");
+
+
     echo '{
         "naam": "Henk de Vries",
         "leeftijd": 31,

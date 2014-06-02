@@ -3,7 +3,7 @@
 
 // POST routes
 doc(
-    "wijkbewoner",
+    "stappen",
     "Registeren <span class='label label-success'>Af</span>",
     "POST <code>/register</code>",
     '<h4>Meegeven:</h4>

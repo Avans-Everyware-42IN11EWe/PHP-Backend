@@ -3,7 +3,7 @@
 
 
 doc(
-    "wijkbewoner",
+    "stappen",
     "Facebook <span class='label label-success'>Af</span>",
     "POST <code>/facebook</code>",
     '<h4>Meegeven:</h4>

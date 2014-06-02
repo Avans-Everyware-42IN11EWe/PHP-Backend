@@ -22,9 +22,12 @@ header('Access-Control-Allow-Origin: *');
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
-$docs = array("wijk" => array(), "wijkbewoner" => array());
+$docs = array();
 function doc($sort, $name, $url, $html) {
     global $docs;
+    if(!isset($docs[$sort])) {
+        $docs[$sort] = array();
+    }
     array_push($docs[$sort], array(
         "name" => $name,
         "url" => $url,
@@ -40,22 +43,25 @@ require('modules/test/docs.php');
 require('modules/wijk/lijsten.php');
 require('modules/wijk/wijkinformatie.php');
 require('modules/wijk/geo.php');
-require('modules/wijk/buddies.php');
 require('modules/wijk/faq.php');
-require('modules/wijk/videos.php');
 //require('modules/wijk/buddies.php');
 
 /*
  * wijkbewoner
  */
-require('modules/wijkbewoner/registreren.php');
-require('modules/wijkbewoner/facebook.php');
-require('modules/wijkbewoner/status.php');
+
 require('modules/wijkbewoner/profiel.php');
-require('modules/wijkbewoner/commitment.php');
 require('modules/wijkbewoner/chat.php');
 require('modules/wijkbewoner/video.php');
 
+require('modules/stappen/status.php');
+
+require('modules/stappen/registreren.php');
+require('modules/stappen/facebook.php');
+
+
+
+require('modules/stappen/commitment.php');
 
 
 require('modules/admin.php');

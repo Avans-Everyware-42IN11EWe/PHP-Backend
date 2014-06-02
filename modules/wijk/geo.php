@@ -1,7 +1,7 @@
 <?php
 doc(
     "wijk",
-    "GEO <span class='label label-success'>deze shit werkt</span>",
+    "GEO <span class='label label-success'>Af</span>",
     "GET <code>/geo?id=2</code>",
     '<h4>Return:</h4>
     <pre>

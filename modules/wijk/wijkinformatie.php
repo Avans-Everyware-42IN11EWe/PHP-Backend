@@ -9,20 +9,21 @@ ob_start();
     "facebookpageurl": "https://www.facebook.com/glasvezelpaleiskwartier",
     "percentage": 0.5,
     "plaatje": "http://static.panoramio.com/photos/large/47740046.jpg",
+    "video":"http:\/\/glas.mycel.nl\/uploads\/videos\/VID_20140422_131531.mp4",
     "participants": 50,
     "plaatjes": [
-    {
-    'id': 1,
-    'plaatje': 'http://glas.mycel.nl/uploads/plaatjes/132.png',
-    'is_buddy': 0,
-    'has_video': 1
-    },
-    {
-    'id': 2,
-    'plaatje': 'http://graph.facebook.com/100000644333726/picture',
-    'is_buddy': 0,
-    'has_video': 1
-    }
+        {
+        'id': 1,
+        'plaatje': 'http://glas.mycel.nl/uploads/plaatjes/132.png',
+        'is_buddy': 0,
+        'has_video': 1
+        },
+        {
+        'id': 2,
+        'plaatje': 'http://graph.facebook.com/100000644333726/picture',
+        'is_buddy': 0,
+        'has_video': 1
+        }
     ],
     "stappen":[
         {"naam":"Bewoners verzamelen","percentage":0.5},
@@ -67,7 +68,7 @@ $app->get('/district', function() {
     $result =  $stmt->fetch(PDO::FETCH_OBJ);
 
     $stmt = $db->prepare("
-        select r.id, r.plaatje, true as is_buddy, false as has_video
+        select r.id, r.plaatje, r.is_buddy, r.video is not null as has_video
         from residents r
         where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id) and plaatje is not null
         and plaatje != ''
@@ -77,7 +78,7 @@ $app->get('/district', function() {
         select
           r.id,
           concat('http://graph.facebook.com/', userid, '/picture'),
-          false as is_buddy, false as has_video
+          r.is_buddy, r.video is not null as has_video
         from facebook f join residents r on f.resident_id = r.id
 
         ");
@@ -87,7 +88,7 @@ $app->get('/district', function() {
     $result->faq = array("vragen", "BLAAT");
     $result->goededoel = array("doel" => "kerk bouwen", "percentage" => rand(0, 80)/100);
 //    $result->plaatje = "http://static.panoramio.com/photos/large/47740046.jpg";
-    $result->video = "http://glas.mycel.nl/uploads/videos/VID_20140422_131531.mp4";
+    $result->video = "http://glas.mycel.nl/uploads/videos/sample_mpeg4.mp4";
 
     $p1 = min($result->percentage, 1);
     $p2 = min(rand(0, $p1*100)/100, 1);
