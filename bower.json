@@ -1,0 +1,24 @@
+{
+  "name": "PHP-Backend",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Avans-Everyware-42IN11EWe/PHP-Backend",
+  "authors": [
+    "Nanne Wielinga <nanne@mycel.nl>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "jquery": "~2.1.0",
+    "rxjs": "~2.2.26",
+    "react": "~0.10.0",
+    "react-bootstrap": "~0.10.2",
+    "director": "~1.2.2"
+  }
+}

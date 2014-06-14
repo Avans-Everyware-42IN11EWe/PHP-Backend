@@ -63,7 +63,7 @@ $app->get("/districts", function(){
 
     $db = \Helpers\DatabaseHelper::GetPDOConnection();
 
-    $stmt = $db->query("select `id`, `name`, `status`, FLOOR(RAND()*100)/CEIL(RAND()*20) as distance, FLOOR(RAND()*100)/100 as percentage from districts");
+    $stmt = $db->query("select `id`, `name`, `status`, `image` as `plaatje`, FLOOR(RAND()*100)/CEIL(RAND()*20) as distance, FLOOR(RAND()*100)/100 as percentage from districts");
 
     echo json_encode($stmt->fetchAll(PDO::FETCH_OBJ), JSON_NUMERIC_CHECK);
 });

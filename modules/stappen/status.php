@@ -52,7 +52,6 @@ $app->get('/progress', function () {
         where id = ? and token = ?");
 
 
-
     $stmt->execute(array($_GET['id'], $_GET['auth_token']));
     echo json_encode($stmt->fetch(PDO::FETCH_ASSOC), JSON_NUMERIC_CHECK);
 //    echo '{ "status": 1 }';

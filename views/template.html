@@ -1,23 +1,34 @@
 <!doctype html>
-<html ng-app="glasApp">
+<html>
 <head>
     <title>Glas aan huis - Admin</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>-->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>-->
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="/bower_components/react/react-with-addons.js"></script>
+    <script src="/bower_components/react/JSXTransformer.js"></script>
+    <script src="/bower_components/react-bootstrap/react-bootstrap.js"></script>
+
+    <script src="/bower_components/director/build/director.min.js"></script>
+
+
+    <!--<script src="http://fb.me/react-with-addons-0.10.0.min.js"></script>-->
+    <!--<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>-->
+
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js"></script>
+    <!--<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>-->
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.css" rel="stylesheet">
+    <!--<link href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.css" rel="stylesheet">-->
     <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet'>
 
     <link href="/static/css/main.css" rel="stylesheet">
-    <script src="/static/js/main.js"></script>
+
 
     <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
 </head>
@@ -28,30 +39,14 @@
     <div class="masthead">
         <h3 class="text-muted">Glas aan huis</h3>
         <ul class="nav nav-justified">
-            <li class="active"><a href="#/dashboard">Dashboard</a></li>
-            <li><a href="#/wijken">Wijken</a></li>
+            <li><a href="/admin">Dashboard</a></li>
+            <li><a href="/admin/wijken">Wijken</a></li>
         </ul>
     </div>
 
-<!--&lt;!&ndash; Jumbotron &ndash;&gt;-->
-    <!--<div class="jumbotron">-->
-        <!--<h1>Marketing stuff!</h1>-->
-        <!--<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>-->
-        <!--<p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>-->
-    <!--</div>-->
-
-    <div ng-view>
-
-        <!--<label>Name:</label>-->
-        <!--<input type="text" ng-model="yourName" placeholder="Enter a name here">-->
-        <!--<hr>-->
-        <!--<h1>Hello {{yourName}}!</h1>-->
-
-
-        <!--<div id="map" style="width: auto; height: 500px;"></div>-->
-
+    <div id="view">
+        {{ view }}
     </div>
-
 
 </div>
 

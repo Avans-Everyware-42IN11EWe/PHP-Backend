@@ -58,6 +58,7 @@ $app->get('/district', function() {
             `facebookpageid`,
             `facebookpageurl`,
             `image` as `plaatje`,
+            `video`,
 
             round((select count(id) from residents where district_id = districts.id) / goal, 2) as percentage,
             (select count(id) from residents where district_id = districts.id) as participants
@@ -68,10 +69,9 @@ $app->get('/district', function() {
     $result =  $stmt->fetch(PDO::FETCH_OBJ);
 
     $stmt = $db->prepare("
-        select r.id, r.plaatje, r.is_buddy, r.video is not null as has_video
+        select r.id, IF(r.plaatje != '', r.plaatje, 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/c47.0.160.160/p160x160/252231_1002029915278_1941483569_n.jpg') as plaatje, r.is_buddy, r.video is not null as has_video
         from residents r
-        where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id) and plaatje is not null
-        and plaatje != ''
+        where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id)
 
         union all
 
@@ -87,14 +87,30 @@ $app->get('/district', function() {
     $result->plaatjes = $stmt->fetchAll(PDO::FETCH_OBJ);
     $result->faq = array("vragen", "BLAAT");
     $result->goededoel = array("doel" => "kerk bouwen", "percentage" => rand(0, 80)/100);
-//    $result->plaatje = "http://static.panoramio.com/photos/large/47740046.jpg";
-    $result->video = "http://glas.mycel.nl/uploads/videos/sample_mpeg4.mp4";
 
-    $p1 = min($result->percentage, 1);
-    $p2 = min(rand(0, $p1*100)/100, 1);
-    $p3 = min(rand(0, $p2*100)/100, 1);
-    $p4 = min(rand(0, $p3*100)/100, 1);
-    $p5 = min(rand(0, $p4*100)/100, 1);
+    $stmt = $db->prepare("
+            SELECT 2 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 1 OR r.`STATUS` = 2)
+              UNION ALL
+            SELECT 3 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 3)
+              UNION ALL
+            SELECT 4 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 4)
+        ");
+    $stmt->execute(array($_GET["id"], $_GET["id"], $_GET["id"]));
+
+    $arr = $stmt->fetchAll(PDO::FETCH_COLUMN|PDO::FETCH_GROUP);
+
+    $p1 = min($arr[2][0], 1);
+    $p2 = min($arr[3][0], 1);
+    $p3 = min($arr[4][0], 1);
+
+    if($p3 == 1) {
+        $p4 = min(rand(0, $p3*100)/100, 1);
+        $p5 = min(rand(0, $p4*100)/100, 1);
+    } else {
+        $p4 = 0;
+        $p5 = 0;
+    }
+
 
     $result->stappen = array(
         array("naam" => "Bewoners verzamelen", "percentage" => $p1),

@@ -1,29 +1,43 @@
-/**
- * Created by nanne on 24-05-14.
- */
+/** @jsx React.DOM */
 
-var glasApp = angular.module('glasApp', ['ngRoute', 'leaflet-directive']);
+var wijken = function() {
+    var Graphs = React.createClass({
+        componentDidMount: function() {
+            d3.json('/admin/graph.json', function(data) {
+                nv.addGraph(function() {
+                    console.log(data);
+                    var chart = nv.models.stackedAreaChart()
+                            .x(function(d) { return d[0] })
+                            .y(function(d) { return d[1] })
+                            .clipEdge(true)
+                            .useInteractiveGuideline(false)
+                        ;
 
-glasApp.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider
-            .when('/dashboard', {
-                templateUrl: 'views/dashboard.html',
-                controller: 'DashboardCtl'
-            })
-            .when('/wijken', {
-                templateUrl: 'views/wijken.html',
-                controller: 'WijkCtl'
-            })
-            .otherwise({
-                redirectTo: '/dashboard'
+                    chart.xAxis
+                        .showMaxMin(true)
+                        .tickFormat(function(d) { return d3.time.format('%x')(new Date(d * 1000)) });
+
+                    chart.yAxis
+                        .tickFormat(d3.format(',r'));
+
+                    d3.select('#chart svg')
+                        .datum(data)
+                        .transition().duration(100).call(chart);
+
+                    nv.utils.windowResize(chart.update);
+
+                    return chart;
+                });
             });
-    }]);
+        },
+        render: function() {
+            return (
+                <div id="chart">
+                    <svg style={{height: '400px', width: '100%'}}></svg>
+                </div>
+            );
+        }
+    });
 
-glasApp.controller('DashboardCtl', function ($scope) {
-
-});
-
-glasApp.controller('WijkCtl', function ($scope) {
-    var map = L.mapbox.map('map', 'nanne.i84f0he3');
-});
+    React.renderComponent(<Graphs />, document.getElementById('view'));
+};

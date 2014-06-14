@@ -44,7 +44,7 @@ $app->post('/facebook', function(){
 
         $random = md5(rand());
 
-        $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `name`, `address`, `token`) VALUES (NULL, ?, ?, ?, ?, ?);");
+        $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `name`, `token`) VALUES (NULL, ?, ?, ?, ?);");
         $sth->execute(array($input->district_id, $user_profile["email"],  $user_profile["name"], $random));
 
         $sth2 = $db->query('SELECT LAST_INSERT_ID() as last_id');
@@ -54,7 +54,7 @@ $app->post('/facebook', function(){
         $sth3 = $db->prepare('INSERT INTO facebook (resident_id, userid, access) VALUES(?, ?, ?);');
         $sth3->execute(array($last_id, $user_id, $token));
 
-        echo json_encode(array("user_id" => $last_id, "user_token" => $random));
+        echo json_encode(array("user_id" => $last_id, "user_token" => $random, "auth_token" => $random));
 
 
 

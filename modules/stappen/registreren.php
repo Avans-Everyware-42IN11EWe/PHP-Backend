@@ -10,8 +10,6 @@ doc(
  <pre>
 {
     "email": "bill@microsoft.com",
-    "name": "Bill Gates",
-    "latlong": [1.233, 4.222],
     "district_id": 3
 }</pre>
 
@@ -29,10 +27,10 @@ $app->post('/register', function() {
 
     $random = md5(rand());
 
-    $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `name`, `address`, `token`) VALUES (NULL, ?, ?, ?, ?, ?);");
+    $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `token`) VALUES (NULL, ?, ?, ?);");
 
     $input = json_decode(file_get_contents("php://input"));
-    $sth->execute(array($input->district_id, $input->email, $input->name, json_encode($input->latlong), $random));
+    $sth->execute(array($input->district_id, $input->email, $random));
     $db->commit();
 
     $sth2 = $db->query('SELECT LAST_INSERT_ID() as last_id');
@@ -40,5 +38,5 @@ $app->post('/register', function() {
 
     $userid = intval($last_id[0]['last_id']);
 
-    echo json_encode(array("user_id" => $userid, "auth_token" => $random));//'{ "user_id": 34 }';
+    echo json_encode(array("user_id" => $userid, "user_token" => $random, "auth_token" => $random));//'{ "user_id": 34 }';
 });

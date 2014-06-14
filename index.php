@@ -2,9 +2,6 @@
 require 'vendor/autoload.php';
 
 require 'helpers/database.helper.php';
-require 'builders/query.builder.php';
-
-require 'managers/user.manager.php';
 
 if(!file_exists("config.php")) {
     die("Je moet het 'config.php'-bestandje uit dropbox halen en de hoofdmap stoppen.");
@@ -42,6 +39,7 @@ require('modules/test/docs.php');
  */
 require('modules/wijk/lijsten.php');
 require('modules/wijk/wijkinformatie.php');
+require('modules/wijk/ids.php');
 require('modules/wijk/geo.php');
 require('modules/wijk/faq.php');
 //require('modules/wijk/buddies.php');
@@ -51,17 +49,17 @@ require('modules/wijk/faq.php');
  */
 
 require('modules/wijkbewoner/profiel.php');
+require('modules/wijkbewoner/edit.php');
 require('modules/wijkbewoner/chat.php');
 require('modules/wijkbewoner/video.php');
+require('modules/wijkbewoner/image.php');
+
 
 require('modules/stappen/status.php');
-
 require('modules/stappen/registreren.php');
 require('modules/stappen/facebook.php');
-
-
-
 require('modules/stappen/commitment.php');
+require('modules/stappen/provider.php');
 
 
 require('modules/admin.php');

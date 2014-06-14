@@ -1,5 +1,25 @@
 <?php
 
+$app->get("/admin", function(){
+
+    $temp = file_get_contents("views/template.html");
+    $view = file_get_contents("views/dashboard.html");
+
+    $temp = str_replace('{{ view }}', $view, $temp);
+    echo $temp;
+
+});
+
+$app->get("/admin/wijken", function(){
+
+    $temp = file_get_contents("views/template.html");
+    $view = file_get_contents("views/wijken.html");
+
+    $temp = str_replace('{{ view }}', $view, $temp);
+    echo $temp;
+
+});
+
 $app->get("/admin/graph.json", function(){
     global $app;
     $app->response->headers->set('Content-Type', 'application/json');
@@ -30,6 +50,3 @@ $app->get("/admin/graph.json", function(){
 
 });
 
-$app->get("/admin", function(){
-    echo file_get_contents("views/template.html");
-});
