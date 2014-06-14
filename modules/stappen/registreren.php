@@ -10,7 +10,8 @@ doc(
  <pre>
 {
     "email": "bill@microsoft.com",
-    "district_id": 3
+    "district_id": 3,
+    "is_buddy": true
 }</pre>
 
 <p class="bg-info">district_id staat voor wijknummer</p>
@@ -26,11 +27,17 @@ $app->post('/register', function() {
     $db->beginTransaction();
 
     $random = md5(rand());
+    $is_buddy = false;
 
-    $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `token`) VALUES (NULL, ?, ?, ?);");
+    $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `token`, `is_buddy`) VALUES (NULL, ?, ?, ?, ?);");
 
     $input = json_decode(file_get_contents("php://input"));
-    $sth->execute(array($input->district_id, $input->email, $random));
+
+    if(isset($input->is_buddy)) {
+        $is_buddy = true;
+    }
+
+    $sth->execute(array($input->district_id, $input->email, $random, $is_buddy));
     $db->commit();
 
     $sth2 = $db->query('SELECT LAST_INSERT_ID() as last_id');

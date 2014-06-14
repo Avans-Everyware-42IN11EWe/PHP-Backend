@@ -6,24 +6,14 @@ doc(
     "FAQ <span class='label label-warning'>Zal wel</span>",
     "GET <code>/faq?district=1</code>",
     "<h4>Return:</h4>
-    <pre>
-[
-    'la lala laalal la la la la',
-    'nog meer informatie'
-]</pre>");
-$app->get("/videos", function(){
+    <pre><b>Wat is glasvezel?</b><p>heel tekstje</p></pre>");
+$app->get("/faq", function(){
     ?>
-    [
-    {
-    'id': 123455,
-    'url': "http://glas.mycel.nl/uploads/videos/123455.mp4",
-    'thumb_url': "http://glas.mycel.nl/uploads/videos/123455.mp4.jpg"
-    },
-    {
-    'id': 123456,
-    'url': "http://glas.mycel.nl/uploads/videos/123456.mp4",
-    'thumb_url': "http://glas.mycel.nl/uploads/videos/123456.mp4.jpg"
-    }
-    ]
+    <b>Wat is glas?</b>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquam animi consequuntur dolor eius eos error excepturi, explicabo in laboriosam maxime, minima minus quam qui recusandae rem, ullam veniam voluptates!</p>
+    <b>Wat is vezel?</b>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquam animi consequuntur dolor eius eos error excepturi, explicabo in laboriosam maxime, minima minus quam qui recusandae rem, ullam veniam voluptates!</p>
+    <b>Wat is glasvezel?</b>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquam animi consequuntur dolor eius eos error excepturi, explicabo in laboriosam maxime, minima minus quam qui recusandae rem, ullam veniam voluptates!</p>
 <?php
 });

@@ -4,6 +4,7 @@
     "minimum-stability": "stable",
     "require": {
         "slim/slim": "2.4.2",
-        "facebook/php-sdk" : "v3.2.3"
+        "facebook/php-sdk" : "v3.2.3",
+        "twig/twig": "1.*"
     }
 }

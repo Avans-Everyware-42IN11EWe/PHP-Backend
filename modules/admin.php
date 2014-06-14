@@ -1,13 +1,21 @@
 <?php
 
+
+
 $app->get("/admin", function(){
+//    global $twig;
 
-    $temp = file_get_contents("views/template.html");
-    $view = file_get_contents("views/dashboard.html");
+    echo "hoi";
+    $loader = new Twig_Loader_Filesystem('/');
+    echo "hoi";
+    $twig = new Twig_Environment($loader);
+    echo "hoi";
+//    $temp = file_get_contents("views/template.html");
+//    $view = file_get_contents("views/dashboard.html");
 
-    $temp = str_replace('{{ view }}', $view, $temp);
-    echo $temp;
-
+//    $temp = str_replace('{{ view }}', $view, $temp);
+//    echo $temp;
+//    echo $twig->render('dashboard.html');
 });
 
 $app->get("/admin/wijken", function(){

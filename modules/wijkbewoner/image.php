@@ -29,34 +29,48 @@ $app->post("/image", function(){
         die("foute access code of id");
     }
 
-
+    echo "1<br>";
     if ($_FILES["file"]["size"] < 8589934592)
     {
+        echo "2<br>";
         if ($_FILES["file"]["error"] > 0) {
             http_response_code(401);
         } else {
-            if (file_exists("uploads/plaatjes/" . $_FILES["file"]["name"])){
-                http_response_code(402);
+            http_response_code(201);
+
+            $path = $_FILES['file']['name'];
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+            $name = time();
+//                $image = 'uploads/plaatjes/'.$name.".".$ext;//.'.mp4';
+            $target = 'uploads/plaatjes/'.$name.".jpg";
+
+            if(in_array($ext, array("jpeg", "jpg"))) {
+                $source = imagecreatefromjpeg($_FILES["file"]["tmp_name"]);
+            } elseif($ext == "png") {
+                $source = imagecreatefrompng($_FILES["file"]["tmp_name"]);
+            } elseif($ext == "gif"){
+                $source = imagecreatefromgif($_FILES["file"]["tmp_name"]);
             } else {
-                http_response_code(201);
-
-                $path = $_FILES['file']['name'];
-                $ext = pathinfo($path, PATHINFO_EXTENSION);
-
-                $name = time();
-                $video = 'uploads/plaatjes/'.$name.".".$ext;//.'.mp4';
-
-                //echo shell_exec("avconv -i $source -c:v libx264 -profile:v baseline -c:a libfaac -ar 44100 -ac 2 -b:a 128k -movflags faststart $video 2>&1") . "<br>";
-                move_uploaded_file($_FILES["file"]["tmp_name"], $video); $source = $video;
-//                shell_exec("avconv -i $source -deinterlace -an -ss 1 -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $thumbnail 2>&1");
-                echo "http://glas.mycel.nl/".$video;
-
-                $stmt = $db->prepare("
-                    update residents
-                    set plaatje = ?
-                    where id = ? and token = ?");
-                $stmt->execute(array("http://glas.mycel.nl/".$video, $_GET['id'], $_GET['auth_token']));
+                http_response_code(401);
+                die("stuk");
             }
+
+//                $source = $image;
+            $newwidth = 400;
+            $newheight = 400;
+            list($width, $height) = getimagesize($_FILES["file"]["tmp_name"]);
+            $thumb = imagecreatetruecolor($newwidth, $newheight);
+            imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+            imagejpeg($thumb, $target);
+
+            $stmt = $db->prepare("
+                update residents
+                set plaatje = ?
+                where id = ? and token = ?");
+            $stmt->execute(array("http://glas.mycel.nl/".$target, $_GET['id'], $_GET['auth_token']));
+            echo "http://glas.mycel.nl/".$target;
         }
     }
     else
