@@ -1,8 +1,8 @@
 <?php
-require 'vendor/autoload.php';
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+require 'vendor/autoload.php';
 require 'helpers/database.helper.php';
 
 if(!file_exists("config.php")) {
@@ -20,6 +20,9 @@ header('Access-Control-Allow-Origin: *');
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+
+$loader = new Twig_Loader_Filesystem('views/');
+$twig = new Twig_Environment($loader);
 
 $docs = array();
 function doc($sort, $name, $url, $html) {
@@ -63,8 +66,8 @@ require('modules/stappen/facebook.php');
 require('modules/stappen/commitment.php');
 require('modules/stappen/provider.php');
 
-
-require('modules/admin.php');
+require('modules/admin/dashboard.php');
+require('modules/admin/wijken.php');
 
 require('modules/test/video.php');
 require('modules/test/geo.php');

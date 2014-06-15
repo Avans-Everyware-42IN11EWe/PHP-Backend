@@ -27,16 +27,23 @@ $app->post('/register', function() {
     $db->beginTransaction();
 
     $random = md5(rand());
-    $is_buddy = false;
+
 
     $sth = $db->prepare("INSERT INTO residents (`id`, `district_id`, `email`, `token`, `is_buddy`) VALUES (NULL, ?, ?, ?, ?);");
 
     $input = json_decode(file_get_contents("php://input"));
 
-    if(isset($input->is_buddy)) {
-        $is_buddy = true;
-    }
+    $is_buddy = 0;
 
+    if(is_string($input->is_buddy) && $input->is_buddy == "true") {
+        $is_buddy = 1;
+    }
+    if(is_int($input->is_buddy) && $input->is_buddy == 1) {
+        $is_buddy = 1;
+    }
+    if(is_bool($input->is_buddy) && $input->is_buddy) {
+        $is_buddy = 1;
+    }
     $sth->execute(array($input->district_id, $input->email, $random, $is_buddy));
     $db->commit();
 

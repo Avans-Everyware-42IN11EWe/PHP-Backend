@@ -1,4 +1,6 @@
+{% extends "template.html" %}
 
+{% block content %}
 <script>
     $(function(){
         d3.json('/admin/graph.json', function(data) {
@@ -35,6 +37,8 @@
         width: 100%;
     }
 </style>
+     
 <div id="chart">
     <svg></svg>
 </div>
+{% endblock %}

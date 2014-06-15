@@ -1,3 +1,15 @@
+{% extends "template.html" %}
+
+{% block scripts %}
+<script src="https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js"></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet'>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https:////api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+{% endblock %}
+
+{% block content %}
 <div class="form-group">
     <label for="searchName">Zoeken op wijk:</label>
     <input type="search" class="form-control" id="searchName" value="" placeholder="Vul naam in">
@@ -9,25 +21,28 @@
 <script>
     $(function() {
         var map = L.mapbox.map('map', 'nanne.i84f0he3');
-        $.get('/geo', function(data){
-            map.setView(data.centroid.reverse(), 14);
-            for (var i = 0; i < data.wijken.length; i++) {
-                var wijk = data.wijken[i];var p = wijk.percentage;
-                var red = Math.ceil((100 - Math.max(50, p)) * (255/50));
-                var green = Math.ceil(Math.min(50, p) * (255/50));
+        $.get('/geowijk', function(data){
+//            map.setView(data.centroid.reverse(), 9);
+            var markers = new L.MarkerClusterGroup();
 
-                L.marker(wijk.center.reverse()).addTo(map)
-                        .bindPopup(wijk.code + "")
-                        .openPopup();
+            for (var i = 0; i < data.length; i++) {
+                var a = data[i];
+                var title = a[2];
+                var marker = L.marker(new L.LatLng(a[0], a[1]), {
+                    icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+                    title: title
+                });
 
-                var polygon = L.polygon(_.map(wijk.bound, function(a) { return a.reverse(); })).addTo(map);
-                polygon.setStyle({color: "black",weight: 3,fillColor: "rgb("+red+","+green+",0)",fillOpacity: 0.7});
+                marker.bindPopup(title+'<button class="trigger">Say hi</button>');
+                markers.addLayer(marker);
             }
+
+            map.addLayer(markers);
         });
     });
 </script>
 
-<div id="map"></div>
+<div id="map" style="height: 500px; width: 100%"></div>
 
 
 
@@ -49,3 +64,4 @@
         <!--</tr>-->
     <!--</tbody>-->
 <!--</table>-->
+{% endblock %}

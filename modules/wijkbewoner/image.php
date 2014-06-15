@@ -29,10 +29,8 @@ $app->post("/image", function(){
         die("foute access code of id");
     }
 
-    echo "1<br>";
     if ($_FILES["file"]["size"] < 8589934592)
     {
-        echo "2<br>";
         if ($_FILES["file"]["error"] > 0) {
             http_response_code(401);
         } else {

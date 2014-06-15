@@ -69,29 +69,34 @@ $app->get('/district', function() {
     $result =  $stmt->fetch(PDO::FETCH_OBJ);
 
     $stmt = $db->prepare("
-        select r.id, IF(r.plaatje != '', r.plaatje, 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/c47.0.160.160/p160x160/252231_1002029915278_1941483569_n.jpg') as plaatje, r.is_buddy, r.video is not null as has_video
-        from residents r
-        where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id)
+        select *
+        from (
+            select r.id, IF(r.plaatje != '', r.plaatje, 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/c47.0.160.160/p160x160/252231_1002029915278_1941483569_n.jpg') as plaatje, r.is_buddy as is_buddy, r.video is not null as has_video
+            from residents r
+            where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id)
 
-        union all
+            union all
 
-        select
-          r.id,
-          concat('http://graph.facebook.com/', userid, '/picture'),
-          r.is_buddy, r.video is not null as has_video
-        from facebook f join residents r on f.resident_id = r.id
+            select
+              r.id,
+              concat('http://graph.facebook.com/', userid, '/picture'),
+              r.is_buddy as is_buddy, r.video is not null as has_video
+            from facebook f join residents r on f.resident_id = r.id
+            where r.district_id = ?
+        ) a
+        order by is_buddy desc, rand()
 
         ");
-    $stmt->execute(array($_GET["id"]));
+    $stmt->execute(array($_GET["id"], $_GET["id"]));
 
     $result->plaatjes = $stmt->fetchAll(PDO::FETCH_OBJ);
     $result->faq = array("vragen", "BLAAT");
     $result->goededoel = array("doel" => "kerk bouwen", "percentage" => rand(0, 80)/100);
 
     $stmt = $db->prepare("
-            SELECT 2 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 1 OR r.`STATUS` = 2)
+            SELECT 2 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 1 OR r.`STATUS` = 2 OR r.`STATUS` = 3 OR r.`STATUS` = 4)
               UNION ALL
-            SELECT 3 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 3)
+            SELECT 3 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 3 OR r.`STATUS` = 4)
               UNION ALL
             SELECT 4 AS `status`, round(count(*) / d.goal, 2) FROM residents r JOIN districts d ON d.`id` = r.district_id WHERE `district_id` = ? AND (r.`STATUS` = 4)
         ");

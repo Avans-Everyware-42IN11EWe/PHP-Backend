@@ -5,17 +5,18 @@ doc(
     "stappen",
     "Provider lijst <span class='label label-success'>Af</span>",
     "GET <code>/providers?district=1</code> of GET <code>/providers?user_id=1</code>",
-    '<h4>Return:</h4>
+    '
+
+<h4>Return:</h4>
     <pre>
 [
-    {"id": 1, "name": "UPC", "voters": 2},
-    {"id": 2, "name": "Chello", "voters": 2}
+    {"id": 1, "name": "UPC", "score": 2},
+    {"id": 2, "name": "Chello", "score": 2}
 ]</pre>');
 $app->get("/providers", function(){
     global $app;
     $app->response->headers->set('Content-Type', 'application/json');
 
-    $d = 0;
     if(!isset($_GET['district']) && isset($_GET['user_id'])) {
         $db = \Helpers\DatabaseHelper::GetPDOConnection();
         $stmt = $db->prepare("
@@ -24,7 +25,6 @@ $app->get("/providers", function(){
         from residents
         where id = ?");
 
-
         $stmt->execute(array($_GET['user_id']));
         $d = $stmt->fetch(PDO::FETCH_COLUMN);
     } else {
@@ -32,7 +32,14 @@ $app->get("/providers", function(){
     }
 
     $db = \Helpers\DatabaseHelper::GetPDOConnection();
-    $stmt = $db->prepare("SELECT dp.id, name, (select count(*) from residents r where r.chozen_provider = dp.id and r.district_id = dp.district_id) as voters FROM district_providers dp JOIN providers p ON p.id = dp.provider_id WHERE dp.district_id = ?");
+    $stmt = $db->prepare("
+        SELECT
+            dp.id,
+            `name`,
+            (select sum(`order`)/count(*) from resident_provider r where r.provider_id = dp.id) as score
+        FROM district_providers dp
+        JOIN providers p ON p.id = dp.provider_id
+        WHERE dp.district_id = ?");
 
     $stmt->execute(array($d));
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,10 +50,14 @@ $app->get("/providers", function(){
 
 doc(
     "stappen",
-    "Provider kiezen <span class='label label-success'>Af</span>",
-    "POST <code>/providers?user_id=1&auth_token=blaat123&provider_id=1</code>",
-    '<h4>Return:</h4>
-    <pre>ok</pre>');
+    "Provider kiezen <span class='label label-success'>Af</span> 2.0",
+    "POST <code>/providers?user_id=1&auth_token=blaat123</code>",
+    '
+<h4>Meegeven:</h4>
+<pre>[1, 2]</pre>
+
+<h4>Return:</h4>
+<pre>ok</pre>');
 $app->POST("/providers", function(){
     global $app;
     $app->response->headers->set('Content-Type', 'application/json');
@@ -54,14 +65,23 @@ $app->POST("/providers", function(){
     $db = \Helpers\DatabaseHelper::GetPDOConnection();
     $stmt = $db->prepare("
         UPDATE residents
-        SET `status` = 4, chozen_provider = ?
+        SET `status` = 4
         where id = ? and token = ? and (`status` = 3)");
 
-    $stmt->execute(array($_GET['provider_id'], $_GET['user_id'], $_GET['auth_token']));
+    if(!$stmt->execute(array($_GET['user_id'], $_GET['auth_token']))) echo "stuk";
 
-    echo '[
-    {"id": 1, "name": "UPC", "voters": 2},
-    {"id": 2, "name": "Chello", "voters": 2}
-]';
+    $stmt = $db->prepare("
+        INSERT INTO resident_provider
+        VALUES (?, ?, ?)
+        ");
+
+    $input = json_decode(file_get_contents("php://input"));
+
+    $i = 1;
+    foreach($input as $a) {
+        $stmt->execute(array($_GET['user_id'], $a, $i++));
+    }
+
+    echo 'ok';
 });
 
