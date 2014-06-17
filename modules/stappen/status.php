@@ -47,7 +47,7 @@ $app->get('/progress', function () {
     $db = \Helpers\DatabaseHelper::GetPDOConnection();
     $stmt = $db->prepare("
         select
-            `status`
+            `status`, `district_id`
         from residents
         where id = ? and token = ?");
 

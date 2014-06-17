@@ -71,7 +71,12 @@ $app->get('/district', function() {
     $stmt = $db->prepare("
         select *
         from (
-            select r.id, IF(r.plaatje != '', r.plaatje, 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/c47.0.160.160/p160x160/252231_1002029915278_1941483569_n.jpg') as plaatje, r.is_buddy as is_buddy, r.video is not null as has_video
+            select
+              r.id,
+              IF(r.plaatje != '', r.plaatje, 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/t1.0-1/c47.0.160.160/p160x160/252231_1002029915278_1941483569_n.jpg') as plaatje,
+              r.is_buddy as is_buddy,
+              r.video,
+              r.video is not null as has_video
             from residents r
             where district_id = ? and NOT EXISTS (select * from facebook f where r.id = f.resident_id)
 
@@ -80,12 +85,14 @@ $app->get('/district', function() {
             select
               r.id,
               concat('http://graph.facebook.com/', userid, '/picture'),
-              r.is_buddy as is_buddy, r.video is not null as has_video
+              r.is_buddy as is_buddy,
+              r.video,
+              r.video is not null as has_video
             from facebook f join residents r on f.resident_id = r.id
             where r.district_id = ?
         ) a
-        order by is_buddy desc, rand()
-
+        order by has_video desc, is_buddy desc, rand()
+        limit 60
         ");
     $stmt->execute(array($_GET["id"], $_GET["id"]));
 

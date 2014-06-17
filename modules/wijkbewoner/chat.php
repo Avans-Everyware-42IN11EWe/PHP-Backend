@@ -1,7 +1,7 @@
 <?php
 
 doc("wijkbewoner",
-    "Chatberichten ophalen <span class='label label-success'>Af</span>",
+    "Chatgesprek ophalen <span class='label label-success'>Af</span>",
     "GET <code>/chat?resident_id=1&sender_id=2</code> optioneel: <code>&from=20</code> waar from de ID is",
     '
     <h4>Return:</h4>
@@ -24,6 +24,34 @@ $app->get("/chat", function(){
         array_push($p, $_GET["from"]);
     }
 
+    $stmt->execute($p);
+
+    $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+    echo json_encode($result, JSON_NUMERIC_CHECK);
+});
+
+doc("wijkbewoner",
+    "Chatberichten ophalen <span class='label label-success'>Af</span>",
+    "GET <code>/history?resident_id=1</code>",
+    '
+    <p>Van elke user het laatste bericht</p>
+    <h4>Return:</h4>
+<pre>[{"from": {"id": 2, "name":"Henk", "photo": "http://google.nl/image.jpg"}, "timestamp":1234434, "message": "afsd;afsdjadfslk"} ]</pre>
+');
+$app->get("/history", function(){
+    global $app;
+    $db = \Helpers\DatabaseHelper::GetPDOConnection();
+
+    $app->response->headers->set('Content-Type', 'application/json');
+
+    $stmt = $db->prepare("
+    select *
+    from chat
+    where receiver_id = ?
+    group by sender_id
+    order by id desc
+    ");
+    $p = array($_GET["resident_id"]);
     $stmt->execute($p);
 
     $result = $stmt->fetchAll(PDO::FETCH_OBJ);
